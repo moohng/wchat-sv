@@ -2,7 +2,7 @@
 
 module.exports = function (ws, req) {
 
-    console.log('一个用户已连接：', ws);
+    console.log('一个用户已连接：');
 
     // 连接关闭后触发
     ws.on('close', (code, reason) => {
