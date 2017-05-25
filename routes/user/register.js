@@ -1,5 +1,5 @@
 const url = require('url');
-const { User } = require('../model');
+const { User } = require('../../model');
 
 module.exports = function (req, res) {
 

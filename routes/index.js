@@ -1,5 +1,4 @@
 const express = require('express');
-
 // 解析body
 const bodyParser = require('body-parser');
 const bodys = [
@@ -8,8 +7,17 @@ const bodys = [
 ];
 
 // 解析cookie
-const cookieParser = require('cookie-parser');
-const cookie = cookieParser();
+// const cookie = require('cookie-parser')('wchat');
+// Session
+const session = require('express-session')({
+    name: 'wchat.user',
+    secret: 'wchat',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        secure: false
+    }
+});
 
 module.exports = function (app) {
 
@@ -28,15 +36,15 @@ module.exports = function (app) {
         next();
     });
     // cookie
-    app.use(cookie)
+    app.use([session, bodys]);
 
-    // 注册
-    app.post('/signup', bodys, require('./signup'));
+    // 用户
+    app.use('/user', require('./user'));
 
-    // 登录
-    app.post('/signin', bodys, require('./signin'));
+    // 话题
+    app.use('/topic', require('./topic'));
 
-    // 注销
-    app.get('/signout', require('./signout'));
+    // 消息管理
+    app.use('/message', require('./message'));
 }
 

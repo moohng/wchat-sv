@@ -1,6 +1,8 @@
 // 创建express应用
 const app = require('express')();
 
+app.set('trust proxy', 1);
+
 // 路由
 require('./routes')(app);
 
