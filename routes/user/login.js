@@ -18,13 +18,15 @@ module.exports = function (req, res) {
         // 保存session
         req.session.user = data.username;
 
+        console.log('用户%s已登录', req.session.user);
         // 返回 成功代码、状态说明、连接ws的密钥ws_key
-        const ws = require('../../ws_key');
-        ws.ws_key = Math.random().toString(36).substr(2);
+        const share = require('../../share');
+        share.username = data.username;
+        const ws_key = share.ws_key = Math.random().toString(36).substr(2);
         res.send({
             code: 10000,
             status: 'login success',
-            ws_key: ws.ws_key
+            ws_key
         });
         /**
          * ws_key   用来连接WebSocket

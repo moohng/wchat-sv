@@ -1,38 +1,28 @@
+const share = require('../share');
+
+const clients = {};
 
 module.exports = function (ws, req) {
 
-    console.log('一个用户已连接：', req.headers.cookie);
-    const wsss = require('../ws_key');
-    console.log('.........', wsss.ws_key);
-    // console.log('一个用户已连接：', req.session);
+    console.log('一个用户已连接！');
+    // 记录当前连接的用户
+    clients[share.username] = ws;
+    delete share.username;
+
+    // 收到客户端的消息
+    ws.on('message', data => {
+        // 接收到消息后，解析消息来转发给对应的用户
+    });
 
     // 连接关闭后触发
     ws.on('close', (code, reason) => {
-
+        console.log('一个用户已断开！');
     });
 
     ws.on('error', err => {
 
     });
-
     ws.on('headers', (headers, res) => {
-
-    });
-
-    ws.on('message', data => {
-
-    });
-
-    // 连接建立
-    ws.on('open', () => {
-
-    });
-
-    ws.on('ping', data => {
-
-    });
-
-    ws.on('pong', data => {
 
     });
 }

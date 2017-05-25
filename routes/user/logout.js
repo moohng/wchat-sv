@@ -2,17 +2,20 @@ const url = require('url');
 
 module.exports = function (req, res) {
 
-    console.log('jjjjjjjjjjjjj')
-
+    const username = req.session.user;
     req.session.destroy(err => {
         if (err) {
-            console.log('注销失败')
+            console.log('注销失败');
             res.send(null);
             return;
         }
 
+        console.log('用户%s已注销', username);
         // 清除cookie
         res.clearCookie();
-        res.send({status: 'success'});
-    })
+        res.send({
+            code: 10000,
+            status: 'logout success'
+        });
+    });
 }

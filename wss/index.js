@@ -23,7 +23,7 @@ module.exports = function (server) {
     });
     // 响应头被写入之前触发
     wss.on('headers', (headers, req) => {
-        console.log('响应头：', headers);
+        // console.log('响应头：', headers);
     });
     // WebSocket启动后触发
     wss.on('listening', () => {
