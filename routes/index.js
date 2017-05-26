@@ -21,6 +21,7 @@ const session = require('express-session')({
 
 module.exports = function (app) {
 
+    app.user = {};
     // 静态资源
     app.use('/', express.static('www'));
 
@@ -46,5 +47,7 @@ module.exports = function (app) {
 
     // 消息管理
     app.use('/message', require('./message'));
+
+    app.use('/ws', require('./ws'));
 }
 

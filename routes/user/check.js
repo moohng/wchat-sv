@@ -1,18 +1,14 @@
 
-module.exports = function (req, res) {
+module.exports = function (req, res, next) {
 
     if (req.session.user) {
-        const share = require('../../share');
-        share.username = req.session.user;
-        const ws_key = share.ws_key = Math.random().toString(36).substr(2);
-        res.send({
-            code: 10000,
-            status: 'login success',
-            ws_key
-        });
+        next();
     }
     else {
         console.log('未登录');
-        res.send(null);
+        res.send({
+            code: 99999,
+            status: 'not login'
+        });
     }
 }

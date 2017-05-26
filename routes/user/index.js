@@ -1,11 +1,9 @@
 
 const router = require('express').Router();
 
-// 中间件
-// router.use(() => {});
 
 // 获取所有用户
-router.get('/', () => {});
+router.get('/', require('./check'), require('./get'));
 // 获取用户信息
 // router.get('/:username', () => {});
 
@@ -14,7 +12,12 @@ router.post('/register', require('./register'));
 // 登录
 router.post('/login', require('./login'));
 // 检查登录
-router.get('/login', require('./check'));
+router.get('/login', require('./check'), function(req, res) {
+    res.send({
+        code: 10000,
+        status: 'logged in'
+    })
+});
 // 注销
 router.get('/logout', require('./logout'));
 

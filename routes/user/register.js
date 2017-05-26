@@ -32,14 +32,10 @@ module.exports = function (req, res) {
             req.session.user = data.username;
 
             console.log('保存数据库成功');
-            // 返回 成功代码、状态说明、连接ws的密钥ws_key
-            const share = require('../../share');
-            share.username = data.username;
-            const ws_key = share.ws_key = Math.random().toString(36).substr(2);
+            // 返回 成功代码、状态说明
             res.send({
                 code: 10000,
-                status: 'register success',
-                ws_key
+                status: 'register success'
             });
         })
     })

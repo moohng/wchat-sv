@@ -1,18 +1,17 @@
 // 创建express应用
 const app = require('express')();
-
 app.set('trust proxy', 1);
+
+// WebSocket
+const expressWS = require('express-ws')(app);
 
 // 路由
 require('./routes')(app);
 
 // 启动一个http服务器
-server = app.listen(3000, function() {
-    console.log('Server is running on: ');
+app.listen(3000, function() {
+    console.log('Server is running on: ', this.address().port);
 });
-
-// WebSocket
-require('./wss')(server);
 
 // 连接数据库
 const mongoose = require('mongoose');
