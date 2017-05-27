@@ -1,28 +1,34 @@
-const { User } = require('../../model');
+const user = require('../../model/user');
 
 module.exports = function (req, res) {
 
     const data = req.body;
     // 检查用户
-    User.find(data, (err, results) => {
-        if (err) {
-            res.send(null);
-            return;
-        }
+    user.find(data)
+        .then(docs => {
+            if (docs.length === 0) {
+                console.log('用户不存在');
+                res.send({
+                    code: 99999,
+                    status: 'user not exist'
+                });
+                return;
+            }
 
-        if (results.length === 0) {
-            console.log('用户不存在');
-            res.send(null);
-            return;
-        }
-        // 保存session
-        req.session.user = data.username;
-
-        console.log('用户%s已登录', req.session.user);
-        // 返回 成功代码、状态说明
-        res.send({
-            code: 10000,
-            status: 'login success'
+            // 保存session
+            req.session.username = data.username;
+            // 返回 成功代码、状态说明
+            res.send({
+                code: 10000,
+                status: 'login success'
+            });
+            console.log('用户%s已登录', req.session.username);
+        })
+        .catch(err => {
+            console.log('保存数据库出错');
+            res.send({
+                code: 99999,
+                status: 'data base error'
+            });
         });
-    });
 }

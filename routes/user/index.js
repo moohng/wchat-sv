@@ -1,16 +1,19 @@
-
 const router = require('express').Router();
 
+// 解析body
+const bodyParser = require('body-parser');
+const bodys = [
+    bodyParser.json(),
+    bodyParser.urlencoded({ extended: true })
+];
 
-// 获取所有用户
+// 获取用户
 router.get('/', require('./check'), require('./get'));
-// 获取用户信息
-// router.get('/:username', () => {});
 
 // 注册
-router.post('/register', require('./register'));
+router.post('/register', bodys, require('./register'));
 // 登录
-router.post('/login', require('./login'));
+router.post('/login', bodys, require('./login'));
 // 检查登录
 router.get('/login', require('./check'), function(req, res) {
     res.send({

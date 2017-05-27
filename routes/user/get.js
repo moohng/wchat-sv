@@ -1,15 +1,67 @@
+/**
+ * 获取用户信息
+ * 1. 不带参数：获取所有在线的用户
+ * 2. 带参数 username：获取指定用户的详细信息
+ */
+const user = require('../../model/user');
 
 module.exports = function(req, res) {
 
-    let users = [];
-    for (user in req.app.user) {
+    if (req.query && req.query.username) {
+        // 返回指定用户详细信息
+        // 1. 检查用户是否存在
+        const fields = {
+            _id: 0,
+            name: 1,
+            username: 1,
+            about_me: 1,
+            sex: 1,
+            age: 1
+        };
+        user.find(req.query, fields, null)
+            .then(docs => {
+                if (results.length === 0) {
+                    // 用户不存在
+                    console.log('用户不存在');
+                    res.send({
+                        code: 99999,
+                        status: 'user not exist'
+                    });
+                    return;
+                }
 
-        if (user === req.session.user) continue;
-        users.push(user);
+                // 用户存在
+                console.log('找到用户：', results);
+                // 判断是否在线
+                let online = Object.keys(req.app.user).includes(req.query.username);
+                const user = results[0];
+                user.online = online;
+
+                res.send({
+                    code: 10000,
+                    status: 'search user success',
+                    user
+                });
+            })
+            .catch(err => {
+                console.log('数据库出错');
+                res.send({
+                    code: 99999,
+                    status: 'data base error'
+                });
+            });
     }
-    res.send({
-        code: 10000,
-        status: 'get online success',
-        users
-    });
+    else {
+        // 返回在线用户列表
+        const user_obj = req.app.user;
+        delete user_obj[req.session.username];
+        const users = Object.keys(user_obj);
+
+        res.send({
+            code: 10000,
+            status: 'get online success',
+            users
+        });
+    }
+
 }

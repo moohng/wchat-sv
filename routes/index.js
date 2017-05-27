@@ -1,13 +1,5 @@
 const express = require('express');
-// 解析body
-const bodyParser = require('body-parser');
-const bodys = [
-    bodyParser.json(),
-    bodyParser.urlencoded({ extended: true })
-];
 
-// 解析cookie
-// const cookie = require('cookie-parser')('wchat');
 // Session
 const session = require('express-session')({
     name: 'wchat.user',
@@ -21,6 +13,7 @@ const session = require('express-session')({
 
 module.exports = function (app) {
 
+    // 记录所有在线用户
     app.user = {};
     // 静态资源
     app.use('/', express.static('www'));
@@ -36,17 +29,22 @@ module.exports = function (app) {
         });
         next();
     });
-    // cookie
-    app.use([session, bodys]);
+    // session
+    app.use(session);
 
     // 用户
     app.use('/user', require('./user'));
 
+
+    const checkLogin = require('./user/check');
+    // 好友
+    app.use('/friend', checkLogin, require('./friend'));
+
     // 话题
-    app.use('/topic', require('./topic'));
+    app.use('/topic', checkLogin, require('./topic'));
 
     // 消息管理
-    app.use('/message', require('./message'));
+    app.use('/message', checkLogin, require('./message'));
 
     app.use('/ws', require('./ws'));
 }

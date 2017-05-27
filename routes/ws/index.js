@@ -1,12 +1,9 @@
 const router = require('express').Router();
 
-// const clients = {};
-
 router.ws('/', function(ws, req, next) {
 
-    const user = req.session.user
+    const user = req.session.username
     if (user) {
-        // clients[user] = ws;
         // 保存用户
         req.app.user[user] = ws;
         next();
@@ -16,7 +13,7 @@ router.ws('/', function(ws, req, next) {
     }
 }, function(ws, req) {
 
-    const user = req.session.user
+    const user = req.session.username
     console.log('用户%s已连接！', user);
 
     // 收到客户端的消息
