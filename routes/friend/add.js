@@ -7,13 +7,13 @@ module.exports = function(req, res) {
 
     // 找到对应的web socket
     const ws = req.app.user[username];
-    console.log(req.app.user)
     if (ws && ws.readyState === 1) {
         // 获取当前用户的信息
         const whereis = { username: req.session.username };
         const fields = {
             _id: 0,
-            username: 1
+            username: 1,
+            pre_friends: 1
         }
         user.find(whereis, fields)
             .then(docs => {
@@ -26,7 +26,10 @@ module.exports = function(req, res) {
                 }
                 else {
                     // 保存数据库
-                    user.update(whereis, { pre_friend: username})
+                    const pre_friends = docs[0].pre_friends;
+                    pre_friends.push(username);
+
+                    user.update(whereis, { pre_friends })
                         .then(raw => {
                             const message = {
                                 code: 100,

@@ -12,7 +12,7 @@ const User = mongoose.model('user', {
     registed_time: {type: Date, default: Date.now },   // 注册时间
 
     friends: [String],     // 用户好友列表
-    pre_friend: String,   // 已添加但对方还未接受的好友列表
+    pre_friends: [String],   // 已添加但对方还未接受的好友列表
     topics: [String]       // 用户消息列表（话题）
 });
 // 创建

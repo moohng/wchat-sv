@@ -18,7 +18,7 @@ module.exports = function(req, res) {
             sex: 1,
             age: 1
         };
-        user.find(req.query, fields, null)
+        user.find(req.query, fields)
             .then(docs => {
                 if (results.length === 0) {
                     // 用户不存在
