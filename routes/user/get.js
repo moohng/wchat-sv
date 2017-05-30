@@ -16,11 +16,13 @@ module.exports = function(req, res) {
             username: 1,
             about_me: 1,
             sex: 1,
-            age: 1
+            age: 1,
+            friends: 1
         };
+
         user.find(req.query, fields)
             .then(docs => {
-                if (results.length === 0) {
+                if (docs.length === 0) {
                     // 用户不存在
                     console.log('用户不存在');
                     res.send({
@@ -31,11 +33,17 @@ module.exports = function(req, res) {
                 }
 
                 // 用户存在
-                console.log('找到用户：', results);
+                console.log('找到用户：', docs);
                 // 判断是否在线
-                let online = Object.keys(req.app.user).includes(req.query.username);
-                const user = results[0];
+                const online = Object.keys(req.app.user).includes(req.query.username);
+                const user = docs[0];
                 user.online = online;
+                // 判断是否是好友关系
+                const friendly = user.friends.includes(req.session.username);
+                delete user.friends
+                user.friendly = friendly;
+
+                console.log(user)
 
                 res.send({
                     code: 10000,

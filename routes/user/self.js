@@ -26,5 +26,5 @@ module.exports = function(req, res) {
                 code: 99999,
                 status: 'data base error'
             });
-        })
+        });
 }
