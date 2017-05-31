@@ -28,7 +28,12 @@ router.ws('/', function(ws, req, next) {
                 const client = req.app.user[username];
                 if (client !== ws && client.readyState === 1) {
                     console.log('转发消息到聊天室');
-                    client.send(JSON.stringify(message));
+                    delete message.to;
+
+                    client.send(JSON.stringify(Object.assign({
+                        code: 300,
+                        status: 'chatroom message'
+                    }, message)));
                 }
             }
             return;
@@ -38,7 +43,11 @@ router.ws('/', function(ws, req, next) {
         if (toClient && toClient.readyState === 1) {
             console.log('转发消息到', message.to);
             delete message.to;
-            toClient.send(JSON.stringify(message));
+
+            toClient.send(JSON.stringify(Object.assign({
+                        code: 200,
+                        status: 'private message'
+                    }, message)));
         }
     });
 

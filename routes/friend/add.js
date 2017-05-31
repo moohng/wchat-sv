@@ -34,7 +34,10 @@ module.exports = function(req, res) {
                             const message = {
                                 code: 100,
                                 status: 'add friend request',
-                                from: docs[0]
+                                from: req.session.username,
+                                content: {
+                                    text: req.query.greeting
+                                }
                             }
                             // 发送消息
                             ws.send(JSON.stringify(message));
