@@ -1,4 +1,5 @@
 const express = require('express');
+const config = require('../config');
 
 // Session
 const session = require('express-session')({
@@ -22,7 +23,7 @@ module.exports = function (app) {
     app.use((req, res, next) => {
         res.set({
             // 跨域cookie 不能为通配符 *
-            'Access-Control-Allow-Origin': 'http://localhost:8808',
+            'Access-Control-Allow-Origin': config.allow_origin,
             'Access-Control-Allow-Methods': 'GET,POST',
             // 跨域cookie必须为true
             'Access-Control-Allow-Credentials': true
