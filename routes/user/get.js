@@ -36,14 +36,15 @@ module.exports = function(req, res) {
                 console.log('找到用户：', docs);
                 // 判断是否在线
                 const online = Object.keys(req.app.user).includes(req.query.username);
-                const user = docs[0];
-                user.online = online;
                 // 判断是否是好友关系
-                const friendly = user.friends.includes(req.session.username);
-                delete user.friends
-                user.friendly = friendly;
+                const friendly = docs[0].friends.includes(req.session.username);
 
-                console.log(user)
+                const user = Object.assign({
+                    online,
+                    friendly
+                    // 防止出错，模拟深度拷贝
+                }, JSON.parse(JSON.stringify(docs[0])));
+                delete user.friends;
 
                 res.send({
                     code: 10000,

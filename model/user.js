@@ -5,7 +5,7 @@ const User = mongoose.model('user', {
     username: String,    // 注册用户名
     password: String,   // 用户密码
 
-    name: { type: String, default: this.username },  // 用户昵称
+    name: { type: String, default: '默认昵称' },  // 用户昵称
     age: { type: Number, default: Math.round(Math.random() * 100) },
     sex: { type: String, default: 'female' },
     about_me: { type: String, default: '岁月静好，可你还不来' },
