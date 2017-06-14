@@ -24,11 +24,11 @@ module.exports = {
    */
   deploy : {
     production : {
-      user : 'root',
+      user : 'moohng',
       host : '39.108.137.234',
       ref  : 'origin/master',
       repo : 'git@github.com:moohng/wchat-sv.git',
-      path : '/root/server/production',
+      path : '/home/moohng/server/production',
       'post-deploy' : 'npm install && pm2 reload ecosystem.config.js --env production'
     }
   }
