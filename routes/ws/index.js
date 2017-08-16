@@ -3,13 +3,13 @@ const router = require('express').Router();
 router.ws('/', function(ws, req, next) {
 
     const user = req.session.username
+    console.log('122222222222', user, typeof user);
     if (user) {
         // 保存用户
         req.app.user[user] = ws;
         next();
-    }
-    else {
-        ws.upgradeReq.destroy();
+    } else {
+        ws.close('关闭连接');
     }
 }, function(ws, req) {
 

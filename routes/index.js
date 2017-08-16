@@ -46,7 +46,5 @@ module.exports = function (app) {
 
     // 消息管理
     app.use('/message', checkLogin, require('./message'));
-
-    app.use('/ws', require('./ws'));
 }
 

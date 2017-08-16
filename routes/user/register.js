@@ -9,7 +9,7 @@ module.exports = function (req, res) {
         .then(docs => {
             if (docs.length > 0) {
                 // 用户不存在
-                console.log('用户已存在');
+                console.log('用户%s已存在', data.username);
                 res.send({
                     code: 99999,
                     status: 'user exist'
@@ -25,7 +25,7 @@ module.exports = function (req, res) {
                     req.session.username = user.username;
                     // 返回 成功代码、状态说明
                     res.send({
-                        code: 10000,
+                        code: 0,
                         status: 'register success'
                     });
                     console.log('用户%s注册成功并登陆', user.username);

@@ -4,14 +4,15 @@ const config = require('./config');
 const app = require('express')();
 app.set('trust proxy', 1);
 
-// WebSocket
-require('express-ws')(app);
 // 路由
 require('./routes')(app);
 
 // 启动一个http服务器
 app.listen(config.port, function() {
     console.log('Server is running on: ', this.address().port);
+
+    // ws
+    require('./ws')(this, app);
 });
 
 // 连接数据库
