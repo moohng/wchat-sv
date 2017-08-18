@@ -8,9 +8,10 @@ module.exports = {
     // First application
     {
       name      : 'wchat-sv',
-      script    : 'app.js',
+      script    : 'server.js',
+      watch     : true,
       env: {
-        COMMON_VARIABLE: 'true'
+        NODE_ENV: 'development'
       },
       env_production : {
         NODE_ENV: 'production'

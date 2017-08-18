@@ -4,9 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "set NODE_ENV=production && node app.js",
-    "dev": "set NODE_ENV=development && node app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "cross-env NODE_ENV=production node server.js",
+    "dev": "cross-env NODE_ENV=development node server.js"
   },
   "author": "",
   "license": "ISC",
@@ -17,5 +16,8 @@
     "express-session": "^1.15.3",
     "mongoose": "^4.10.2",
     "socket.io": "^2.0.3"
+  },
+  "devDependencies": {
+    "cross-env": "^5.0.5"
   }
 }
