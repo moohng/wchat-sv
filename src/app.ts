@@ -20,7 +20,7 @@ app.listen(config.port, () => {
 
 // 连接数据库
 connect(config.mongo_host);
-connection.once('error', () => {
+connection.on('error', () => {
   console.log('连接数据库失败');
 });
 connection.once('open', () => {

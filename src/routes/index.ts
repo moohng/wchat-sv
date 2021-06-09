@@ -1,13 +1,44 @@
-import { static as expressStatic, Express, Request, Response, NextFunction } from 'express';
+import { Router, static as expressStatic, Express, Request, Response, NextFunction, RequestHandler } from 'express';
 import session from 'express-session';
 import config from '../config';
 
 import user from './user';
-// import checkLogin from './user/check';
-// import friend from './friend';
-// import topic from './topic';
-// import message from './message';
+import checkLogin from './user/check';
+import friend from './friend';
+import topic from './topic';
+import message from './message';
 // import ws from './ws';
+
+type Method = 'get' | 'post' | 'put' | 'delete';
+
+export interface Route {
+  path: string;
+  method?: Method;
+  controller?: RequestHandler | RequestHandler[];
+  children?: Route[];
+}
+
+const routes: Route[] = [
+  {
+    path: '/user',
+    children: user,
+  },
+  {
+    path: '/friend',
+    controller: checkLogin,
+    children: friend,
+  },
+  {
+    path: '/topic',
+    controller: checkLogin,
+    children: topic,
+  },
+  {
+    path: '/message',
+    controller: checkLogin,
+    children: message,
+  },
+];
 
 export default (app: Express) => {
 
@@ -38,17 +69,25 @@ export default (app: Express) => {
     }
   }));
 
-  // 用户
-  app.use('/user', user);
+  function createRouter(routes: Route[]) {
+    const router = Router();
+    routes.forEach(route => {
+      const method = (route.method || 'get').toLocaleLowerCase() as Method;
+      router[method](route.path, route.controller || []);
+    })
+    return router;
+  }
 
-  // 好友
-  // app.use('/friend', checkLogin, friend);
+  function createModule(routes: Route[]) {
+    routes.forEach(route => {
+      if (route.children) {
+        const router = createRouter(route.children);
+        app.use(route.path, route.controller || [], router);
+      }
+    });
+  }
 
-  // 话题
-  // app.use('/topic', checkLogin, topic);
-
-  // 消息管理
-  // app.use('/message', checkLogin, message);
+  createModule(routes);
 
   // app.use('/ws', ws);
 }
